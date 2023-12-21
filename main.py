@@ -1,11 +1,19 @@
 from fastapi import FastAPI, File, UploadFile
 from modules import utils
 from modules import generate
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="Detect images to keywords Swagger")
 col = utils.connect_db()
 
 utils.connect_cloudinary()
-
+# Cấu hình CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 class UploadResponse:
     def __init__(self, _id: str, image_url: str, public_id: str, keywords: list):
         self._id = _id
@@ -30,6 +38,17 @@ def getAllImages():
 
 @app.get("/search")
 def searchKeywords(keywords: str):
-    print(keywords)
-    search_result = list(col.find({"keywords": {"$regex": keywords, "$options": "i"}}, {"_id": False}))
-    return search_result
+    if keywords == 'all':
+        return getAllImages()
+    else:
+        search_result = list(col.find({"keywords": {"$regex": keywords, "$options": "i"}}, {"_id": False}))
+        return search_result
+
+@app.get("/keywords")
+def getKeywords():
+    unique_keywords = set()
+    items = col.find({}, {"keywords": True, "_id": False})
+    for item in items:
+        keywords = item.get("keywords", [])
+        unique_keywords.update(keywords)
+    return unique_keywords
