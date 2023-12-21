@@ -16,7 +16,7 @@ The response is a JSON object with the following structure:
 
 ```json
 {
-  "image_url": "The URL of the wordart image",
+  "image_url": "The URL of the image in cloudinary",
   "keywords": [
     "keyword1",
     "keyword2",
