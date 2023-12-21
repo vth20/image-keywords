@@ -4,8 +4,10 @@ import pymongo
 import cloudinary
 import cloudinary.uploader as uploader
 import cloudinary.api
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 def wordify(file, filepath, wordarts_path):
     try:
         text = pp.extract_text(filepath)
@@ -30,7 +32,7 @@ def wordify(file, filepath, wordarts_path):
 def connect_db():
     try:
         print('connectdb')
-        client = pymongo.MongoClient("mongodb+srv://admin:admin@lucete-cluster.zguseq2.mongodb.net/?retryWrites=true&w=majority")
+        client = pymongo.MongoClient(os.getenv("MONGO_URL"))
         mydb = client["mnm"]
         mycol = mydb["images"]
         return mycol
@@ -46,17 +48,16 @@ def insert_db(col, data):
 
 def connect_cloudinary():
     cloudinary.config(
-        cloud_name = "vth20",
-        api_key = "263948874589436",
-        api_secret = "vkkkJvXkz8cKxyTyieF6WXlG_v4",
+        cloud_name = os.getenv("CLOUD_NAME"),
+        api_key = os.getenv("API_KEY"),
+        api_secret = os.getenv("API_SECRET"),
         secure = True
     )
 
 def upload_image(file):
     if file:
         upload_result = uploader.upload(file)
-        print(upload_result)
         public_id = upload_result['public_id']
-        image_url = upload_result['url'];
+        image_url = upload_result['url']
 
         return public_id, image_url

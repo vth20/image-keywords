@@ -50,5 +50,6 @@ wordcloud==1.8.2.2
 xlrd==1.2.0
 XlsxWriter==3.0.3
 ultralytics==8.0.190
-mymongo==4.6.1
+pymongo==4.6.1
 cloudinary==1.37.0
+python-dotenv==1.0.0

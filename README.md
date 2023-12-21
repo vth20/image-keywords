@@ -10,6 +10,13 @@ $ docker compose up -d
 ```
 Omit the `-d` flag to see the logs.
 
+## API
+- Use to get all images in your database;\
+$ http://localhost:8001/
+- Use to upload new images in your database;\
+$ http://localhost:8001/upload
+- Use to search images with keyword in your database;\
+$ http://localhost:8001/upload
 ## Response
 
 The response is a JSON object with the following structure:
